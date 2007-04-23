@@ -19,11 +19,14 @@ BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel >= 3.3
 BuildRequires:	zlib-devel
-Obsoletes:	bircd
-Obsoletes:	ircd
-Obsoletes:	ircd-hybrid
-Obsoletes:	ircd-ptlink
-Obsoletes:	ircd6
+Obsoletes:  bircd
+Obsoletes:  ircd
+Obsoletes:  ircd-hybrid
+Obsoletes:  ircd6
+Obsoletes:  ircd-ptlink
+Provides:	user(inspircd)
+Provides:	group(inspircd)
+Provides:	group(ircd)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
