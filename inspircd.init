@@ -26,7 +26,7 @@ else
 fi
 
 start() {
-	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf $HTTPD_OPTS
+	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf --logfile /var/log/inspircd/inspircd.log
 	RETVAL=$?
 	if [ $RETVAL -eq 0 ]; then
 		ok
@@ -46,7 +46,7 @@ reload() {
 	# sending INT signal will make inspircd close all listening sockets and
 	# wait for client connections to terminate.
 	killproc --pidfile /var/run/inspircd.pid inspircd -INT
-	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf $HTTPD_OPTS
+	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf --logfile /var/log/inspircd/inspircd.log
 }
 
 RETVAL=0
