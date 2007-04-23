@@ -26,7 +26,7 @@ else
 fi
 
 start() {
-	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf --logfile /var/log/inspircd/inspircd.log
+	daemon --user inspircd inspircd  --logfile /var/log/inspircd/inspircd.log
 	RETVAL=$?
 	if [ $RETVAL -eq 0 ]; then
 		touch /var/lock/subsys/inspircd
