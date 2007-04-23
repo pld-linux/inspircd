@@ -29,10 +29,7 @@ start() {
 	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf --logfile /var/log/inspircd/inspircd.log
 	RETVAL=$?
 	if [ $RETVAL -eq 0 ]; then
-		ok
-	   	touch /var/lock/subsys/inspircd
-	else
-		fail
+		touch /var/lock/subsys/inspircd
 	fi
 	return $RETVAL
 }
@@ -45,8 +42,7 @@ stop() {
 reload() {
 	# sending INT signal will make inspircd close all listening sockets and
 	# wait for client connections to terminate.
-	killproc --pidfile /var/run/inspircd.pid inspircd -INT
-	daemon --user inspircd inspircd -f /etc/inspircd/inspircd.conf --logfile /var/log/inspircd/inspircd.log
+	killproc --pidfile /var/run/inspircd.pid inspircd -HUP
 }
 
 RETVAL=0
@@ -76,17 +72,10 @@ case "$1" in
 	;;
   restart)
 	if [ -f /var/lock/subsys/inspircd ]; then
-		# short circuit to safe reload if pid exists and is alive
-		pid=$(pidofproc inspircd inspircd.pid)
-		if [ "$pid" ] && checkpid $pid; then
-			msg_reloading inspircd
-			reload
-		else
-			msg_stopping inspircd
-			stop
-			msg_starting inspircd
-			start
-		fi
+		msg_stopping inspircd
+		stop
+		msg_starting inspircd
+		start
 		RETVAL=$?
 	else
 		msg_not_running inspircd
