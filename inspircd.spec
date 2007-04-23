@@ -6,8 +6,8 @@ License:	GPL
 Group:		Networking/Daemons
 URL:		http://www.inspircd.org/
 BuildRequires:	gcc-c++
+BuildRequires:	gnutls-devel
 BuildRequires:	mysql-devel
-BuildRequires:	openssl-devel
 BuildRequires:	pcre-devel
 BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
@@ -17,6 +17,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
 # Source0-md5:	b94e33527a10d15edc5a5b9291428cc0
 Source1:	%{name}.init
+Source2:	%{name}.conf
 Patch1:		%{name}-1.1b8_default_config.patch
 Patch2:		%{name}-1.1.2-m_no_op_on_channel_create.patch
 
@@ -54,7 +55,7 @@ cd ../../
 	--enable-ipv6 \
 	--enable-remote-ipv6 \
 	--enable-epoll \
-	--enable-openssl \
+	--enable-gnutls \
 	--prefix=%{_prefix}/lib/%{name}/ \
 	--config-dir=%{_sysconfdir}/%{name} \
 	--library-dir=%{_libdir}/%{name}/ \
@@ -65,10 +66,16 @@ cd ../../
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/%{name},/var/run/%{name},/var/log/%{name},%{_sysconfdir}/init.d}
+install -d $RPM_BUILD_ROOT{/var/lib/%{name},/var/run/%{name},/var/log/%{name},%{_sysconfdir}/rc.d/init.d}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT INSTMODE="0755"
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/%{name}
+
+for file in $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/*.example; do
+	mv $file `echo $file | sed -e 's/.example//'`
+done
+
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
 
 %pre
 %groupadd -g 216 inspircd
@@ -108,27 +115,15 @@ exit 0
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.conf
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.quotes
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.rules
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.conf.example
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.quotes.example
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.rules.example
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.censor
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.censor.example
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.filter
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.filter.example
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop-full
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop-full.example
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop.example
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.motd
-%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.motd.example
 %attr(750,inspircd,inspircd) /var/lib/%{name}
 %attr(750,inspircd,inspircd) /var/run/%{name}
 %attr(750,inspircd,inspircd) /var/log/%{name}
-#
-%dir %{_prefix}/lib/%{name}
-%{_prefix}/lib/%{name}/%{name}
-%{_prefix}/lib/%{name}/.gdbargs
-#
+
 %dir %{_libdir}/%{name}/
 %attr(755,root,root) %{_libdir}/%{name}/cmd_*.so
 %attr(755,root,root) %{_libdir}/%{name}/libIRCD*.so
@@ -209,7 +204,7 @@ exit 0
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_spanningtree.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_spy.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_ssl_dummy.so
-%attr(755,root,root) %{_libdir}/%{name}/modules/m_ssl_openssl.so
+%attr(755,root,root) %{_libdir}/%{name}/modules/m_ssl_gnutls.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_sslmodes.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_stripcolor.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_svshold.so
