@@ -19,7 +19,11 @@ BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel >= 3.3
 BuildRequires:	zlib-devel
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:  bircd
+Obsoletes:  ircd
+Obsoletes:  ircd-hybrid
+Obsoletes:  ircd6
+Obsoletes:  ircd-ptlink
 
 %description
 InspIRCd is a modular C++ IRC Daemon for Linux, BSD and Windows
