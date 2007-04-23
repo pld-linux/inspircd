@@ -1,0 +1,13 @@
+Index: docs/inspircd.conf.example
+===================================================================
+--- docs/inspircd.conf.example
++++ docs/inspircd.conf.example
+@@ -571,7 +571,7 @@
+ # the default of 'inspircd.pid' is used.                              #
+ #                                                                     #
+ 
+-#<pid file="/path/to/inspircd.pid">
++<pid file="/var/run/inspircd/inspircd.pid">
+ 
+ #-#-#-#-#-#-#-#-#-#-#-#-#- BANLIST LIMITS #-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+ #                                                                     #
