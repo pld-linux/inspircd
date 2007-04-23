@@ -1,12 +1,18 @@
-Name:		inspircd
 Summary:	Modular IRC daemon
+Name:		inspircd
 Version:	1.1.6
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
 URL:		http://www.inspircd.org/
-BuildRequires:	gcc-c++
+Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
+# Source0-md5:	b94e33527a10d15edc5a5b9291428cc0
+Source1:	%{name}.init
+Source2:	%{name}.conf
+Patch0:		%{name}-1.1b8_default_config.patch
+Patch1:		%{name}-1.1.2-m_no_op_on_channel_create.patch
 BuildRequires:	gnutls-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	mysql-devel
 BuildRequires:	pcre-devel
 BuildRequires:	pkgconfig
@@ -14,12 +20,6 @@ BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel >= 3.3
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
-# Source0-md5:	b94e33527a10d15edc5a5b9291428cc0
-Source1:	%{name}.init
-Source2:	%{name}.conf
-Patch1:		%{name}-1.1b8_default_config.patch
-Patch2:		%{name}-1.1.2-m_no_op_on_channel_create.patch
 
 %description
 InspIRCd is a modular C++ IRC Daemon for Linux, BSD and Windows
@@ -37,18 +37,17 @@ other irc server distributions which have the same featureset.
 
 %prep
 %setup -q -n %{name}
+%patch0
 %patch1
-%patch2
 
-find -type f -name \*.orig -print0 | xargs -r0 rm -v
-cd src/modules/
-for i in $(ls extra/*sql* extra/*pcre* extra/m_ssl_oper_cert.cpp extra/m_sslinfo.cpp | grep -v sqlite3 | grep -v mysql) ; do
+find -type f -name '*.orig' -print0 | xargs -r0 rm -v
+cd src/modules
+for i in $(ls extra/*sql* extra/*pcre* extra/m_ssl_oper_cert.cpp extra/m_sslinfo.cpp | grep -v sqlite3 | grep -v mysql); do
 	ln -s -v $i .
 done
 ln -s -v extra/m_sqlite3.cpp .
 ln -s -v extra/m_mysql.cpp .
 ln -s -v extra/m_ziplink.cpp .
-cd ../../
 
 %build
 %configure \
@@ -61,21 +60,26 @@ cd ../../
 	--library-dir=%{_libdir}/%{name}/ \
 	--module-dir=%{_libdir}/%{name}/modules \
 	--binary-dir=%{_sbindir}
-%configure --modupdate
+
+# XXX: two configures?
+%configure \
+	--modupdate \
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/%{name},/var/run/%{name},/var/log/%{name},%{_sysconfdir}/rc.d/init.d}
+install -d $RPM_BUILD_ROOT{/var/lib/%{name},/var/run/%{name},/var/log/%{name},/etc/rc.d/init.d}
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT INSTMODE="0755"
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/%{name}
+	INSTMODE="0755" \
+	DESTDIR=$RPM_BUILD_ROOT
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
 for file in $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/*.example; do
 	mv $file `echo $file | sed -e 's/.example//'`
 done
 
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 
 %pre
 %groupadd -g 216 inspircd
@@ -88,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add %{name}
+%service %{name} restart "InspIRCd IRC Daemon"
 
 %preun
 if [ "$1" = "0" ]; then
@@ -102,16 +107,12 @@ if [ "$1" = "0" ]; then
 	%groupremove ircd
 fi
 
-%posttrans
-%service %{name} restart "InspIRCd IRC Daemon"
-exit 0
-
 %files
 %defattr(644,root,root,755)
 %doc docs/* extras/* conf/*
 %attr(755,root,root) %{_sbindir}/inspircd
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
-%dir %attr(750,root,inspircd) %{_sysconfdir}/%{name}/
+%dir %attr(750,root,inspircd) %{_sysconfdir}/%{name}
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.conf
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.quotes
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.rules
@@ -124,10 +125,10 @@ exit 0
 %attr(750,inspircd,inspircd) /var/run/%{name}
 %attr(750,inspircd,inspircd) /var/log/%{name}
 
-%dir %{_libdir}/%{name}/
+%dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/cmd_*.so
 %attr(755,root,root) %{_libdir}/%{name}/libIRCD*.so
-%dir %{_libdir}/%{name}/modules/
+%dir %{_libdir}/%{name}/modules
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_alias.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_antibear.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_antibottler.so
