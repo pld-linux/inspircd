@@ -2,7 +2,7 @@ Summary:	Modular IRC daemon
 Name:		inspircd
 Version:	1.1.6
 Release:	1
-License:	GPL
+License:	GPL v2
 Group:		Networking/Daemons
 URL:		http://www.inspircd.org/
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
