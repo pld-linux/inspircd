@@ -1,16 +1,17 @@
 Summary:	Modular IRC daemon
+Summary(pl.UTF-8):	Modularny demon IRC
 Name:		inspircd
 Version:	1.1.6
 Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
-URL:		http://www.inspircd.org/
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
 # Source0-md5:	b94e33527a10d15edc5a5b9291428cc0
 Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
 Patch1:		%{name}-1.1.2-m_no_op_on_channel_create.patch
+URL:		http://www.inspircd.org/
 BuildRequires:	gnutls-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	mysql-devel
@@ -19,29 +20,43 @@ BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel >= 3.3
 BuildRequires:	zlib-devel
-Obsoletes:  bircd
-Obsoletes:  ircd
-Obsoletes:  ircd-hybrid
-Obsoletes:  ircd6
-Obsoletes:  ircd-ptlink
 Provides:	user(inspircd)
 Provides:	group(inspircd)
 Provides:	group(ircd)
+Obsoletes:	bircd
+Obsoletes:	ircd
+Obsoletes:	ircd-hybrid
+Obsoletes:	ircd6
+Obsoletes:	ircd-ptlink
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 InspIRCd is a modular C++ IRC Daemon for Linux, BSD and Windows
-systems created to provide a stable, modern, lightweight ircd (irc
+systems created to provide a stable, modern, lightweight ircd (IRC
 server) from scratch and provide a vast number of features in a
 modularised form using an advanced module API. By keeping the
 functionality of the main core to a minimum we hope to increase the
 stability and speed of our project and make it customisable to the
-needs of many users. InspIRCd is designed primarily to be a custom irc
-server for the chatspike irc network (irc.chatspike.net) but we are
+needs of many users. InspIRCd is designed primarily to be a custom IRC
+server for the chatspike IRC network (irc.chatspike.net) but we are
 releasing it into the public domain under GPL so that you may benefit
 yourself from our work. The project is written from scratch, avoiding
 the inherent instability under large loads which can be seen in many
-other irc server distributions which have the same featureset.
+other IRC server distributions which have the same featureset.
+
+%description -l pl.UTF-8
+InspIRCd to modularny, napisany w C++ demon IRC dla Linuksa, BSD i
+Windows stworzony od zera, aby zapewnić stabilny, nowoczesny i lekki
+ircd (serwer IRC) o dużych możliwościach w zmodularyzowanej postaci
+przy użyciu zaawansowanego API dla modułów. Utrzymując minimalną
+funkcjonalność podstawowego serwera autorzy mają nadzieję zwiększyć
+stabilność i szybkość, a także umożliwić dostosowywanie do potrzeb
+wielu użytkowników. InspIRCd został zaprojektowany głównie jako własny
+serwer IRC dla sieci chatspike (irc.chatspike.net), ale autorzy mają
+nadzieję, że po udostępnieniu go na GPL także inni będą mogli
+skorzystać z ich pracy. Projekt jest pisany od początku, aby uniknąć
+dziedziczenia niestabilności pod dużym obciążeniem, jaką można
+zaobserwować w wielu innych serwerach IRC o podobnych możliwościach.
 
 %prep
 %setup -q -n %{name}
@@ -71,7 +86,7 @@ ln -s -v extra/m_ziplink.cpp .
 
 # XXX: two configures?
 %configure \
-	--modupdate \
+	--modupdate
 
 %{__make}
 
@@ -89,14 +104,14 @@ done
 
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %pre
 %groupadd -g 216 inspircd
 %groupadd -g 75 ircd
 %useradd -u 216 -d /var/lib/inspircd -c "InspIRCd User" -g inspircd inspircd
 %addusertogroup inspircd ircd
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add %{name}
