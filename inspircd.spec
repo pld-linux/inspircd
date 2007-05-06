@@ -1,12 +1,12 @@
 Summary:	Modular IRC daemon
 Summary(pl.UTF-8):	Modularny demon IRC
 Name:		inspircd
-Version:	1.1.6
+Version:	1.1.7
 Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
-# Source0-md5:	b94e33527a10d15edc5a5b9291428cc0
+# Source0-md5:	480b260fee6e6ecb2db591220606833f
 Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
@@ -155,6 +155,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_alias.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_antibear.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_antibottler.so
+%attr(755,root,root) %{_libdir}/%{name}/modules/m_auditorium.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_banexception.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_blockamsg.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_blockcaps.so
@@ -163,12 +164,14 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_cban.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_censor.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_cgiirc.so
+%attr(755,root,root) %{_libdir}/%{name}/modules/m_chancreate.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_chanfilter.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_chanprotect.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_check.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_chghost.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_chgident.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_cloaking.so
+%attr(755,root,root) %{_libdir}/%{name}/modules/m_clones.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_lusers.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_join.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_umodes.so
@@ -185,6 +188,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_httpd.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_httpd_stats.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_ident.so
+%attr(755,root,root) %{_libdir}/%{name}/modules/m_invisible.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_inviteexception.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_joinflood.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_kicknorejoin.so
