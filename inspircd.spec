@@ -1,12 +1,12 @@
 Summary:	Modular IRC daemon
 Summary(pl.UTF-8):	Modularny demon IRC
 Name:		inspircd
-Version:	1.1.7
+Version:	1.1.8
 Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
-# Source0-md5:	480b260fee6e6ecb2db591220606833f
+# Source0-md5:	4ca1b55574e8d4abd86bbd2a6637dd2e
 Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
@@ -20,14 +20,14 @@ BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel >= 3.3
 BuildRequires:	zlib-devel
-Provides:	user(inspircd)
 Provides:	group(inspircd)
 Provides:	group(ircd)
+Provides:	user(inspircd)
 Obsoletes:	bircd
 Obsoletes:	ircd
 Obsoletes:	ircd-hybrid
-Obsoletes:	ircd6
 Obsoletes:	ircd-ptlink
+Obsoletes:	ircd6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -172,7 +172,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_chgident.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_cloaking.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_clones.so
-%attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_lusers.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_join.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_umodes.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_conn_waitpong.so
@@ -271,3 +270,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_seenicks.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_mysql.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_sqlite3.so
+%attr(755,root,root) %{_libdir}/inspircd/modules/m_regonlycreate.so
+%attr(755,root,root) %{_libdir}/inspircd/modules/m_taxonomy.so
+%attr(755,root,root) %{_libdir}/inspircd/modules/m_uhnames.so
+%attr(755,root,root) %{_libdir}/inspircd/modules/m_xmlsocket.so
