@@ -11,6 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
 Patch1:		%{name}-1.1.2-m_no_op_on_channel_create.patch
+Patch2:		%{name}-modesoncreate.patch
 URL:		http://www.inspircd.org/
 BuildRequires:	gnutls-devel
 BuildRequires:	libstdc++-devel
@@ -62,6 +63,7 @@ zaobserwować w wielu innych serwerach IRC o podobnych możliwościach.
 %setup -q -n %{name}
 %patch0
 %patch1
+%patch2
 
 find -type f -name '*.orig' -print0 | xargs -r0 rm -v
 cd src/modules
@@ -193,6 +195,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_kicknorejoin.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_knock.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_messageflood.so
+%attr(755,root,root) %{_libdir}/inspircd/modules/m_modesoncreate.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_namesx.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_nicklock.so
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_no_op_on_channel_create.so
