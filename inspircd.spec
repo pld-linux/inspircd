@@ -13,9 +13,9 @@ Patch0:		%{name}-1.1b8_default_config.patch
 Patch1:		%{name}-1.1.2-m_no_op_on_channel_create.patch
 Patch2:		%{name}-modesoncreate.patch
 URL:		http://www.inspircd.org/
-BuildRequires:	openssl-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	mysql-devel
+BuildRequires:	openssl-devel
 BuildRequires:	pcre-devel
 BuildRequires:	pkgconfig
 BuildRequires:	postgresql-devel
