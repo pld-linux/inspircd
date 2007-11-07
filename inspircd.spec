@@ -1,12 +1,12 @@
 Summary:	Modular IRC daemon
 Summary(pl.UTF-8):	Modularny demon IRC
 Name:		inspircd
-Version:	1.1.9
+Version:	1.1.14
 Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
-# Source0-md5:	9ca6edbf89ae013ef211b56eeec9fdfb
+# Source0-md5:	61c438533bd023c18599991d34ba3697
 Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
