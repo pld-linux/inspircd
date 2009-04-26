@@ -1,17 +1,18 @@
 Summary:	Modular IRC daemon
 Summary(pl.UTF-8):	Modularny demon IRC
 Name:		inspircd
-Version:	1.1.14
+Version:	1.2.0rc2
 Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
-Source0:	http://www.inspircd.org/downloads/InspIRCd-%{version}.tar.bz2
-# Source0-md5:	61c438533bd023c18599991d34ba3697
+Source0:	http://www.data2you.com.au/inspircd/InspIRCd-1.2.0rc2.tar.bz2
+# Source0-md5:	c1bc89f37e804e7e268e2a6cbbca3d32
 Source1:	%{name}.init
 Source2:	%{name}.conf
 Patch0:		%{name}-1.1b8_default_config.patch
 Patch1:		%{name}-1.1.2-m_no_op_on_channel_create.patch
 Patch2:		%{name}-modesoncreate.patch
+Patch3:		%{name}-fixes.patch
 URL:		http://www.inspircd.org/
 BuildRequires:	libstdc++-devel
 BuildRequires:	mysql-devel
@@ -61,9 +62,10 @@ zaobserwować w wielu innych serwerach IRC o podobnych możliwościach.
 
 %prep
 %setup -q -n %{name}
-%patch0
-%patch1
-%patch2
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 find -type f -name '*.orig' -print0 | xargs -r0 rm -v
 cd src/modules
@@ -75,7 +77,11 @@ ln -s -v extra/m_mysql.cpp .
 ln -s -v extra/m_ziplink.cpp .
 
 %build
-%configure \
+# NOT autoconf
+./configure \
+	--disable-extras=m_mssql.cpp
+
+./configure \
 	--enable-ipv6 \
 	--enable-remote-ipv6 \
 	--enable-epoll \
@@ -86,8 +92,8 @@ ln -s -v extra/m_ziplink.cpp .
 	--module-dir=%{_libdir}/%{name}/modules \
 	--binary-dir=%{_sbindir}
 
-# XXX: two configures?
-%configure \
+# Update makefiles
+./configure \
 	--modupdate
 
 %{__make}
@@ -146,12 +152,14 @@ fi
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.helpop-full
 %config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/inspircd.motd
+%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/links.conf
+%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/modules.conf
+%config(noreplace) %attr(640,root,inspircd) %{_sysconfdir}/%{name}/opers.conf
 %attr(750,inspircd,inspircd) /var/lib/%{name}
 %attr(750,inspircd,inspircd) /var/run/%{name}
 %attr(750,inspircd,inspircd) /var/log/%{name}
 
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/cmd_*.so
-%attr(755,root,root) %{_libdir}/%{name}/libIRCD*.so
 %dir %{_libdir}/%{name}/modules
 %attr(755,root,root) %{_libdir}/%{name}/modules/m_*.so
