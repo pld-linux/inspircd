@@ -1,8 +1,7 @@
-Index: docs/inspircd.conf.example
-===================================================================
---- docs/inspircd.conf.example
-+++ docs/inspircd.conf.example
-@@ -571,7 +571,7 @@
+diff -Nur inspircd.orig/conf/inspircd.conf.example inspircd.1.1b8_default_config/conf/inspircd.conf.example
+--- inspircd.orig/conf/inspircd.conf.example	2009-03-06 03:04:43.000000000 -0700
++++ inspircd.1.1b8_default_config/conf/inspircd.conf.example	2009-04-26 14:42:27.000000000 -0600
+@@ -354,7 +354,7 @@
  # the default of 'inspircd.pid' is used.                              #
  #                                                                     #
  
@@ -11,3 +10,18 @@ Index: docs/inspircd.conf.example
  
  #-#-#-#-#-#-#-#-#-#-#-#-#- BANLIST LIMITS #-#-#-#-#-#-#-#-#-#-#-#-#-#-#
  #                                                                     #
+diff -Nur inspircd.orig/conf/inspircd.conf.example.rej inspircd.1.1b8_default_config/conf/inspircd.conf.example.rej
+--- inspircd.orig/conf/inspircd.conf.example.rej	1969-12-31 17:00:00.000000000 -0700
++++ inspircd.1.1b8_default_config/conf/inspircd.conf.example.rej	2009-04-26 14:42:26.000000000 -0600
+@@ -0,0 +1,11 @@
++--- inspircd.conf.example
+++++ inspircd.conf.example
++@@ -571,7 +571,7 @@
++ # the default of 'inspircd.pid' is used.                              #
++ #                                                                     #
++ 
++-#<pid file="/path/to/inspircd.pid">
+++<pid file="/var/run/inspircd/inspircd.pid">
++ 
++ #-#-#-#-#-#-#-#-#-#-#-#-#- BANLIST LIMITS #-#-#-#-#-#-#-#-#-#-#-#-#-#-#
++ #                                                                     #

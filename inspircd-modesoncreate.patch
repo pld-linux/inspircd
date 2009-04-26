@@ -1,7 +1,60 @@
-Index: src/modules/m_modesoncreate.cpp
-===================================================================
---- src/modules/m_modesoncreate.cpp	(revision 0)
-+++ src/modules/m_modesoncreate.cpp	(revision 0)
+diff -Nur inspircd.orig/conf/inspircd.conf.example.rej inspircd.modesoncreate/conf/inspircd.conf.example.rej
+--- inspircd.orig/conf/inspircd.conf.example.rej	2009-04-26 14:45:09.000000000 -0600
++++ inspircd.modesoncreate/conf/inspircd.conf.example.rej	2009-04-26 14:45:10.000000000 -0600
+@@ -1,14 +1,20 @@
+---- inspircd.conf.example	(revision 6664)
++--- inspircd.conf.example	(revision 6983)
+ +++ inspircd.conf.example	(working copy)
+-@@ -1431,6 +1431,11 @@
+- #<module name="m_nokicks.so">
++@@ -1225,6 +1225,17 @@
++ #<module name="m_chancreate.so">
+  
+  #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+-+# No op on channel create module: Removes op privs from the modes an
+-+# user gets when creating a new channel.
+-+#<module name="m_no_op_on_channel_create.so">
+++# Modes-On-Create module: Set modes on on a new channel when it is created
+++# When this module is loaded, you must configure it
+++#
+++#<module name="m_modesoncreate.so">
+++#
+++#-#-#-#-#-#-#-#-#-#-# MODESONCREATE Configuration #-#-#-#-#-#-#-#-#-#-#
+++# Specify the modes you want new channels to have by setting modes to
+++# a modestring
+++# <modesoncreate modes="-nt+m">
+ +
+ +#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+- # No nicks module: Adds the +N channel mode
+- #<module name="m_nonicks.so">
+- 
++ # Channel filter module: Allows channel-op defined message
++ # filtering using simple string matches (channel mode +g)
++ #<module name="m_chanfilter.so">
+diff -Nur inspircd.orig/conf/modules.conf.example inspircd.modesoncreate/conf/modules.conf.example
+--- inspircd.orig/conf/modules.conf.example	2009-04-26 14:45:09.000000000 -0600
++++ inspircd.modesoncreate/conf/modules.conf.example	2009-04-26 14:45:48.000000000 -0600
+@@ -371,6 +371,17 @@
+ #<module name="m_chancreate.so">
+ 
+ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
++# Modes-On-Create module: Set modes on on a new channel when it is created
++# When this module is loaded, you must configure it
++#
++#<module name="m_modesoncreate.so">
++#
++#-#-#-#-#-#-#-#-#-#-# MODESONCREATE Configuration #-#-#-#-#-#-#-#-#-#-#
++# Specify the modes you want new channels to have by setting modes to
++# a modestring
++# <modesoncreate modes="-nt+m">
++
++#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+ # Channel filter module: Allows channel-op defined message
+ # filtering using simple string matches (channel mode +g)
+ #<module name="m_chanfilter.so">
+diff -Nur inspircd.orig/modules/m_modesoncreate.cpp inspircd.modesoncreate/modules/m_modesoncreate.cpp
+--- inspircd.orig/modules/m_modesoncreate.cpp	1969-12-31 17:00:00.000000000 -0700
++++ inspircd.modesoncreate/modules/m_modesoncreate.cpp	2009-04-26 14:45:10.000000000 -0600
 @@ -0,0 +1,86 @@
 +/*       +------------------------------------+
 + *       | Inspire Internet Relay Chat Daemon |
@@ -89,25 +142,3 @@ Index: src/modules/m_modesoncreate.cpp
 +{
 +  return new ModuleModesOnCreateFactory;
 +}
-Index: docs/inspircd.conf.example
-===================================================================
---- docs/inspircd.conf.example	(revision 6983)
-+++ docs/inspircd.conf.example	(working copy)
-@@ -1225,6 +1225,17 @@
- #<module name="m_chancreate.so">
- 
- #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-+# Modes-On-Create module: Set modes on on a new channel when it is created
-+# When this module is loaded, you must configure it
-+#
-+#<module name="m_modesoncreate.so">
-+#
-+#-#-#-#-#-#-#-#-#-#-# MODESONCREATE Configuration #-#-#-#-#-#-#-#-#-#-#
-+# Specify the modes you want new channels to have by setting modes to
-+# a modestring
-+# <modesoncreate modes="-nt+m">
-+
-+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
- # Channel filter module: Allows channel-op defined message
- # filtering using simple string matches (channel mode +g)
- #<module name="m_chanfilter.so">

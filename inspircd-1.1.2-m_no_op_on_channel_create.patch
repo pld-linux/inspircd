@@ -1,7 +1,48 @@
-Index: src/modules/m_no_op_on_channel_create.cpp
-===================================================================
---- src/modules/m_no_op_on_channel_create.cpp	(revision 0)
-+++ src/modules/m_no_op_on_channel_create.cpp	(revision 0)
+diff -Nur inspircd.orig/conf/inspircd.conf.example.rej inspircd.1.1.2-m_no_op_on_channel_create/conf/inspircd.conf.example.rej
+--- inspircd.orig/conf/inspircd.conf.example.rej	2009-04-26 14:42:57.000000000 -0600
++++ inspircd.1.1.2-m_no_op_on_channel_create/conf/inspircd.conf.example.rej	2009-04-26 14:42:57.000000000 -0600
+@@ -1,11 +1,14 @@
+---- inspircd.conf.example
+-+++ inspircd.conf.example
+-@@ -571,7 +571,7 @@
+- # the default of 'inspircd.pid' is used.                              #
+- #                                                                     #
++--- inspircd.conf.example	(revision 6664)
+++++ inspircd.conf.example	(working copy)
++@@ -1431,6 +1431,11 @@
++ #<module name="m_nokicks.so">
+  
+--#<pid file="/path/to/inspircd.pid">
+-+<pid file="/var/run/inspircd/inspircd.pid">
++ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+++# No op on channel create module: Removes op privs from the modes an
+++# user gets when creating a new channel.
+++#<module name="m_no_op_on_channel_create.so">
+++
+++#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
++ # No nicks module: Adds the +N channel mode
++ #<module name="m_nonicks.so">
+  
+- #-#-#-#-#-#-#-#-#-#-#-#-#- BANLIST LIMITS #-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+- #                                                                     #
+diff -Nur inspircd.orig/conf/modules.conf.example inspircd.1.1.2-m_no_op_on_channel_create/conf/modules.conf.example
+--- inspircd.orig/conf/modules.conf.example	2009-03-06 03:04:43.000000000 -0700
++++ inspircd.1.1.2-m_no_op_on_channel_create/conf/modules.conf.example	2009-04-26 14:44:40.000000000 -0600
+@@ -1054,6 +1054,11 @@
+ #<module name="m_nokicks.so">
+ 
+ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
++# No op on channel create module: Removes op privs from the modes an
++# user gets when creating a new channel.
++#<module name="m_no_op_on_channel_create.so">
++
++#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+ # No nicks module: Adds the +N channel mode, as well as the +b N:
+ # extended bantype. +N stops all users from changing their nick,
+ # the +b N: extban stops anyone from matching a +b N:nick!user@host
+diff -Nur inspircd.orig/modules/m_no_op_on_channel_create.cpp inspircd.1.1.2-m_no_op_on_channel_create/modules/m_no_op_on_channel_create.cpp
+--- inspircd.orig/modules/m_no_op_on_channel_create.cpp	1969-12-31 17:00:00.000000000 -0700
++++ inspircd.1.1.2-m_no_op_on_channel_create/modules/m_no_op_on_channel_create.cpp	2009-04-26 14:42:57.000000000 -0600
 @@ -0,0 +1,75 @@
 +/*       +------------------------------------+
 + *       | Inspire Internet Relay Chat Daemon |
@@ -78,19 +119,3 @@ Index: src/modules/m_no_op_on_channel_create.cpp
 +	return new ModuleOpOnCreateChannelFactory;
 +}
 +
-Index: docs/inspircd.conf.example
-===================================================================
---- docs/inspircd.conf.example	(revision 6664)
-+++ docs/inspircd.conf.example	(working copy)
-@@ -1431,6 +1431,11 @@
- #<module name="m_nokicks.so">
- 
- #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-+# No op on channel create module: Removes op privs from the modes an
-+# user gets when creating a new channel.
-+#<module name="m_no_op_on_channel_create.so">
-+
-+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
- # No nicks module: Adds the +N channel mode
- #<module name="m_nonicks.so">
- 
