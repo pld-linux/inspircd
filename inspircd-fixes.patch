@@ -1,0 +1,12 @@
+diff -Nur inspircd.orig/include/inspircd.h inspircd.fixes/include/inspircd.h
+--- inspircd.orig/include/inspircd.h	2009-03-09 10:47:46.000000000 -0600
++++ inspircd.fixes/include/inspircd.h	2009-04-26 14:47:28.000000000 -0600
+@@ -14,6 +14,8 @@
+ #ifndef __INSPIRCD_H__
+ #define __INSPIRCD_H__
+ 
++#include <stdio.h>
++
+ #define _FILE_OFFSET_BITS 64
+ #ifndef _LARGEFILE_SOURCE
+ #define _LARGEFILE_SOURCE
